@@ -1,6 +1,6 @@
 var player;
 
-var arrayNotas = [];
+var arrayKeys = [];
 var instr = 1;
 var channel = 0;
 
@@ -10,25 +10,24 @@ var guitar = 26;
 var drum = 116;
 var horn = 60;
 
-var cor = 5;
+var color = 5;
 
 var delay = 0; // play one note every quarter second
 var velocity = 127; // how hard the note hits
 
 window.onload = function () {
   MIDI.loadPlugin({
-    //soundfontUrl: "http://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/",
+    //soundfontUrl: "http://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/", // FAIL
     soundfontUrl: '../sarasvati/soundfont/',
     instruments: ["bright_acoustic_piano", "electric_guitar_jazz", "french_horn", "taiko_drum" ], // 1, 26, 60, 116  //  "pan_flute" - 75
     onsuccess: function () {
         //var channel = 0; // MIDI allows for 16 channels, 0-15
-            // the xylophone is represented as instrument 13 in General MIDI.
             // middle C (C4) according to General MIDI
         // play the note
-        MIDI.programChange(0, piano); // Load xylophone into Channel 0
-        MIDI.programChange(1, guitar); // Load xylophone into Channel 0
-        MIDI.programChange(2, horn); // Load xylophone into Channel 0
-        MIDI.programChange(10, drum); // Load xylophone into Channel 0
+        MIDI.programChange(0, piano);
+        MIDI.programChange(1, guitar);
+        MIDI.programChange(2, horn);
+        MIDI.programChange(10, drum); // channel 10 reserved for percussion
         MIDI.setVolume(0, 127);
         MIDI.setVolume(1, 127);
         MIDI.setVolume(2, 127);
@@ -54,10 +53,10 @@ function getChannel(ins){
   }
 }
 
-function tocar(note){
+function play(note){
   var n = note;
-	//primeira nota = 21 (A0)
-	//ultima nota = 108 (C8)
+	//1st note = 21 (A0)
+	//last note = 108 (C8)
 
 	MIDI.noteOn(channel, n, velocity, delay);
 	MIDI.noteOff(channel, n, delay + 0.85);
@@ -80,10 +79,9 @@ function tocar(note){
     var touch = false;
     var instr = "0";
 
-    var cor = 5;
     ctx.strokeStyle = "#76B03C";
   
-    // Detectar toque no mobile
+    // Detect touch on mobile
       canvas.addEventListener("touchstart", function (e) {
               touch = true;
               mouse = getTouchPos(canvas, e);
@@ -105,17 +103,17 @@ function tocar(note){
             }, false);
   
     
-    // Posicao do toque relativo ao canvas
-      function getTouchPos(canvasDom, touchEvent) { // TESTAR!!!
+    // Position of touch relative to canvas
+      function getTouchPos(canvasDom, touchEvent) {
         var rect = canvasDom.getBoundingClientRect();
         return {
           x: touchEvent.touches[0].pageX,
-          y: touchEvent.touches[0].pageY // tirei o - rect.x/y
+          y: touchEvent.touches[0].pageY //  - rect.x/y
         };
       }
     
     
-    // Posicao do mouse relativo ao canvas
+    // Position of pointer relative to canvas
       function getMousePos(canvasDom, mouseEvent) {
         var rect = canvasDom.getBoundingClientRect();
         return {
@@ -125,7 +123,7 @@ function tocar(note){
       }
     
   
-    // Impedir rolagem no mobile
+    // Prevent normal touch behaviour on canvas
       document.body.addEventListener("touchstart", function (e) {
         if (e.target == canvas) {
           e.preventDefault();
@@ -144,7 +142,7 @@ function tocar(note){
       
   
     
-    // Detectar movimento do mouse
+    // Detect mouse movement
       canvas.addEventListener('mousemove', function(e) {
         mouse = getMousePos(canvas, e);
         
@@ -162,89 +160,41 @@ function tocar(note){
           canvas.removeEventListener('mousemove', onPaint, false);
       }, false);
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     ctx.lineWidth = 2;
     ctx.lineJoin = 'miter';
     ctx.lineCap = 'butt';
 
-    function getInstrumento() {
+    function getInstr() {
         var i = document.getElementById('instr');
         instr = Number(i.options[i.selectedIndex].value);
         getChannel(instr);
     }
     
     function getColor(hex, c) {
-        cor = c;
+        color = c;
         ctx.strokeStyle = hex;
     }
 
-/*
-    canvas.addEventListener('mousemove', function(e) {
-        mouse.x = e.pageX - this.offsetLeft;
-        mouse.y = e.pageY - this.offsetTop;
-    }, false);
-
-
-    canvas.addEventListener('mousedown', function(e) {
-    ctx.beginPath();
-    ctx.moveTo(mouse.x, mouse.y);
-          
-       
-    canvas.addEventListener('mousemove', onPaint, false);
-      }, false);
-       
-    canvas.addEventListener('mouseup', function() {
-          canvas.removeEventListener('mousemove', onPaint, false);
-    }, false);
-  
-  */
-       
     var onPaint = function() {
         ctx.lineTo(mouse.x, mouse.y);
         ctx.stroke();
-        calculaNota(mouse.x, mouse.y);
+        calcKey(mouse.x, mouse.y);
     };
 
-    function calculaNota(x,y){
+    function calcKey(x,y){
     	var n = Math.floor(y/30);
-    	var note = (n+24) + (cor * 12);
-      arrayNotas.push([channel, x, note, instr]);
-    	tocar(note);
+    	var note = (n+24) + (color * 12);
+      arrayKeys.push([channel, x, note, instr]);
+    	play(note);
     }
 
-    function enviar(){
-    	document.getElementById("arrayFinal").value = arrayNotas;
-      document.getElementById("coletaArray").submit();
+    function send(){
+    	document.getElementById("arrayFinal").value = arrayKeys;
+      document.getElementById("getArray").submit();
     }
     
-    function limpa(){
+    function clearCanvas(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        arrayNotas = [];
+        arrayKeys = [];
     }

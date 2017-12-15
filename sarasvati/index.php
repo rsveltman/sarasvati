@@ -4,6 +4,7 @@
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <!-- midi.js css -->
   <link href="./css/MIDIPlayer.css" rel="stylesheet" type="text/css" />
+  <link href="./css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 	<!-- polyfill -->
 	<script src="../inc/shim/Base64.js" type="text/javascript"></script>
 	<script src="../inc/shim/Base64binary.js" type="text/javascript"></script>
@@ -45,7 +46,7 @@
         height: 360px;
       }
 
-      .opcoes {
+      .options {
         margin-top: 1px;
         display: inline-block;
         position: fixed;
@@ -57,7 +58,7 @@
         margin-left: 400px;
       }
 
-      .limpar {
+      .clear {
         display: inline-block;
         font-size: 14px;
         margin-left: 10px;
@@ -76,46 +77,46 @@
           width: 780px;
       }
 
-      .cores {
+      .colors {
         display: block;
         float: left;
         width: 26px;
       }
 
-      .cor {
+      .color {
         float: left;
         width: 20px;
         height: 20px;
         margin: 5px;
-        border: 1px solid rgba(0, 0, 0, .2);
+        border: 1px solid rgb(0, 0, 0);
         display: block;
       }
 
-      .azul-claro {
+      .c0 {
         background: #3C76B0;
       }
 
-      .verde-musgo {
+      .c1 {
         background: #76B03C;
       }
 
-      .ocre {
+      .c2 {
         background: #B0B03C;
       }
 
-      .marrom {
+      .c3 {
         background: #B0763C;
       }
 
-      .vermelho {
+      .c4 {
         background: #B03C3C;
       }
 
-      .rosa {
+      .c5 {
         background: #B03C76;
       }
 
-      .roxo {
+      .c6 {
         background: #763CB0;
       }
 
@@ -131,21 +132,21 @@
 
   <div class="container">
     
-    <div class="cores">
+    <div class="colors">
 
-        <div class="cor azul-claro"><a href="#" id="#3C76B0" class="fill-div" onClick="getColor(this.id, 0)"></a></div>
+        <div class="color c0"><a href="#" id="#3C76B0" class="fill-div" onClick="getColor(this.id, 0)"></a></div>
 
-        <div class="cor verde-musgo"><a href="#" id="#76B03C" class="fill-div" onClick="getColor(this.id, 1)"></a></div>
+        <div class="color c1"><a href="#" id="#76B03C" class="fill-div" onClick="getColor(this.id, 1)"></a></div>
 
-        <div class="cor ocre"><a href="#" id="#B0B03C" class="fill-div" onClick="getColor(this.id, 2)"></a></div>
+        <div class="color c2"><a href="#" id="#B0B03C" class="fill-div" onClick="getColor(this.id, 2)"></a></div>
 
-        <div class="cor marrom"><a href="#" id="#B0763C" class="fill-div" onClick="getColor(this.id, 3)"></a></div>
+        <div class="color c3"><a href="#" id="#B0763C" class="fill-div" onClick="getColor(this.id, 3)"></a></div>
 
-        <div class="cor vermelho"><a href="#" id="#B03C3C" class="fill-div" onClick="getColor(this.id, 4)"></a></div>
+        <div class="color c4"><a href="#" id="#B03C3C" class="fill-div" onClick="getColor(this.id, 4)"></a></div>
 
-        <div class="cor rosa"><a href="#" id="#B03C76" class="fill-div" onClick="getColor(this.id, 5)"></a></div>
+        <div class="color c5"><a href="#" id="#B03C76" class="fill-div" onClick="getColor(this.id, 5)"></a></div>
 
-        <div class="cor roxo"><a href="#" id="#763CB0" class="fill-div" onClick="getColor(this.id, 6)"></a></div>
+        <div class="color c6"><a href="#" id="#763CB0" class="fill-div" onClick="getColor(this.id, 6)"></a></div>
 
       </div>
       
@@ -153,26 +154,26 @@
     		<canvas id="myCanvas"></canvas>
   	  </div>
       <div>
-        <div class="form-group opcoes">
-            <form id="coletaArray" action="chamaFuncoes.php" method="post">
+        <div class="form-group options">
+            <form id="getArray" action="callFunctions.php" method="post">
               <label for="bpm">BPM</label>
               <input type="text" name="bpm" size="3" value="180">
               
               <label for="duracao">Dur: </label>
-              <input type="text" name="duracao" size="3" value="5">
+              <input type="text" name="duration" size="3" value="5">
   
               <label for="repeticoes">Repetições</label>
               <input type="text" name="reps" size="3" value="4">
   
               <input type="hidden" id="arrayFinal" name="arrayF" value="">
               
-              <input type="button" name="publish" value="Enviar" onClick="enviar()">
+              <input type="button" name="publish" value="Enviar" onClick="send()">
             </form>
         </div>
   
         <div class="sel">
           <div class="form-group">
-              <select class="form-control" style="height:29px; font-size:9px;" id="instr" onchange="getInstrumento()">
+              <select class="form-control" style="height:29px; font-size:9px;" id="instr" onchange="getInstr()">
                 <option value="1">Piano</option>
                 <option value="60">Sopro</option>
                 <option value="26">Guitarra</option>
@@ -182,12 +183,12 @@
         </div>
       
 
-        <div class="limpar">
-          <button onclick="limpa()">Limpar</button>
+        <div class="clear">
+          <button onclick="clearCanvas()">Limpar</button>
         </div>
 
-        <!--<div class="limpar">-->
-        <!--  <button onclick="<?php //echo "MIDIjs.play('tmp/" . $_GET['file'] . ".mid')"; ?>" >Tocar</button>-->
+        <!--<div class="clear">-->
+        <!--  <button onclick="< ?php //echo "MIDIjs.play('tmp/" . $_GET['file'] . ".mid')"; ?>" >Tocar</button>-->
         <!--</div>-->
           
       </div>

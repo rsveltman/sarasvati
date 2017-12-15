@@ -1,16 +1,16 @@
 <?php
 
-require_once('processaPos.php');
-require_once('produzMidi.php');
+require_once('processPos.php');
+require_once('prodMidi.php');
 
 
 
- $beats = calculaBeats();
- $divisoes = calculaDivisao($beats);
- $canais = criaCanais($divisoes);
+ $beats = calcBeats();
+ $divs = calcDiv($beats);
+ $chans = makeChan($divs);
  $bpm = getBpm();
  $reps = getReps();
- criaMidi($canais, $bpm, $reps);
+ makeMidi($chans, $bpm, $reps);
  //$dl = urlencode($file);
 
 //header("location: download.php?f=" . $dl);
