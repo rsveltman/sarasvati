@@ -29,10 +29,7 @@
 	<!-- utils -->
 	<script src="../js/util/dom_request_xhr.js" type="text/javascript"></script>
 	<script src="../js/util/dom_request_script.js" type="text/javascript"></script>
-  <!-- includes -->
-  <script src="./inc/timer.js" type="text/javascript"></script>
-  <script src="./inc/colorspace.js" type="text/javascript"></script>
-  <script src="./inc/event.js" type="text/javascript"></script>
+  
   
 
 	    <style>
