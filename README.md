@@ -1,7 +1,9 @@
 ## SARASVATI
 
 This was my final uni project. Draw some lines and it turns it into a MIDI file. Pretty straightforward.
+
 Rachel Sarubi Veltman
+
 FATEC Baixada Santista - 2017.
 
 ## Libraries Used
