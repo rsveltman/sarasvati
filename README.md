@@ -14,7 +14,6 @@ FATEC Baixada Santista - 2017.
 * HTML5 & Javascript for the canvas, PHP for the backend.
 
 
-
-### Check out the README to MIDI.js
+## Check out the README to MIDI.js
 
 [For further information](https://github.com/mudcube/MIDI.js/blob/master/README.md)
